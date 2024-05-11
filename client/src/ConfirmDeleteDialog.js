@@ -27,7 +27,7 @@ function ConfirmDeleteDialog({ setShowConfirmDeleteDialog, board }) {
           dismissible
           onClose={() => setShowAlert(null)}
         >
-          <Alert.Heading>Nepodařilo se vytvořit událost</Alert.Heading>
+          <Alert.Heading>Nepodařilo se vytvořit nástěnku</Alert.Heading>
           <pre>{showAlert}</pre>
         </Alert>
         {isPending ? (

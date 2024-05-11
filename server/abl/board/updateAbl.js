@@ -10,6 +10,7 @@ const schema = {
     properties: {
         id: {type: "string", minLength: 32, maxLength: 32},
         name: {type: "string", minLength: 3},
+        description: {type: "string", minLength: 3},
         createdAt: { readOnly: true, type: "string", format: "date-time"},
         modifiedAt: { readOnly: true, type: "string", format: "date-time"},
         userId: { readOnly: true },
@@ -25,7 +26,7 @@ const schema = {
             }
         }
     },
-    required: ["id", "name"],
+    required: ["id"],
     // Define property level readOnly to prevent updates to userId (transferring boards to another user)
     // This will allow the userId field to be set only during creation but disallow updates to it.
     additionalProperties: false,

@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import CloseButton from "react-bootstrap/CloseButton";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
+import { UserContext } from './context/UserContext.js';
 
 import Icon from "@mdi/react";
 import { mdiLoading } from "@mdi/js";
@@ -14,29 +15,32 @@ function BoardForm({ setShowBoardForm, board }) {
   const { state, handlerMap } = useContext(BoardListContext);
   const [showAlert, setShowAlert] = useState(null);
   const isPending = state === "pending";
+  const {  loggedInUser } = useContext(UserContext); // Access UserContext
 
   return (
     <Modal show={true} onHide={() => setShowBoardForm(false)}>
-      <Form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          var formData = Object.fromEntries(new FormData(e.target));
-          try {
-            if (board.id) {
-              formData.id = board.id;
-              await handlerMap.handleUpdate(formData);
-            } else {
-              await handlerMap.handleCreate(formData);
-            }
+        <Form
+            onSubmit={async (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                var formData = Object.fromEntries(new FormData(e.target));
+                try {
+                    if (board.id) {
+                        formData.id = board.id;
+                        formData.userId = loggedInUser.id; // Access userId from loggedInUser
+                        await handlerMap.handleUpdate(formData);
+                    } else {
+                        formData.userId = loggedInUser.id; // Access userId from loggedInUser
+                        await handlerMap.handleCreate(formData);
+                    }
 
-            setShowBoardForm(false);
-          } catch (e) {
-            console.error(e);
-            setShowAlert(e.message);
-          }
-        }}
-      >
+                    setShowBoardForm(false);
+                } catch (e) {
+                    console.error(e);
+                    setShowAlert(e.message);
+                }
+            }}
+        >
         <Modal.Header>
           <Modal.Title>{`${
             board.id ? "Upravit" : "Vytvořit"
@@ -61,17 +65,6 @@ function BoardForm({ setShowBoardForm, board }) {
           ) : null}
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Datum konání</Form.Label>
-            <Form.Control
-              type="datetime-local"
-              name="date"
-              required
-              defaultValue={
-                board.date ? boardDateToInput(board.date) : undefined
-              }
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Název</Form.Label>
             <Form.Control
               type="text"
@@ -86,7 +79,7 @@ function BoardForm({ setShowBoardForm, board }) {
               type="text"
               name="description"
               required
-              defaultValue={board.name}
+              defaultValue={board.description}
             />
           </Form.Group>
         </Modal.Body>

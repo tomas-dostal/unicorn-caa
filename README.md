@@ -4,18 +4,19 @@ This repository serves as homework repo for [Cloud Application Architecture](htt
 
 > This is deeply inspired by [Cloud Application Architecture repo](https://github.com/UnicornUniversity/bcaa-summer-2024/) by [IMilota](mailto:imilota@centrum.cz)
 
-
 # Installation 
 
 In order to use this app, you need [Docker](https://docs.docker.com/get-docker/) either as Docker Desktop (for Windows and Mac) or as pure docker (Linux). 
 
-# Run 
+# Run
 
 To start containers, simply type 
 
 ```sh
 docker-compose up 
 ```
+
+Server is accessible via [localhost:8042](http://localhost:8042) and client via [localhost:3042](http://localhost:3042). 
 
 ## General idea of the app 
 

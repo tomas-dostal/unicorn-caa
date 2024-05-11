@@ -10,6 +10,7 @@ const schema = {
     type: "object",
     properties: {
         name: {type: "string", minLength: 3},
+        description: {type: "string", minLength: 3},
         userId: {type: "string", minLength: 32, maxLength: 32},
         sharedWith: {
             type: "array",
@@ -23,7 +24,7 @@ const schema = {
             }
         }
     },
-    required: ["name", "userId"],
+    required: ["name", "description", "userId"],
     additionalProperties: false
 };
 

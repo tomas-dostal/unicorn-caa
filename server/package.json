@@ -1,7 +1,7 @@
 {
-  "name": "unicorn-bsy",
-  "version": "1.0.0",
-  "description": "",
+  "name": "unicorn-caa-server",
+  "version": "0.1.0",
+  "description": "Server part for trello-like application",
   "main": "index.js",
   "scripts": {
     "start": "node app.js",

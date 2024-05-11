@@ -1,5 +1,6 @@
 {
-  "name": "client",
+  "name": "unicorn-caa-client",
+  "description": "Server part for trello-like application",
   "version": "0.1.0",
   "private": true,
   "options": {

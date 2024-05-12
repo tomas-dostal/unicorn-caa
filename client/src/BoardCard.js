@@ -1,7 +1,7 @@
 import Button from "react-bootstrap/esm/Button.js";
 import { useNavigate } from "react-router-dom";
 
-import BoardDateTimeBadge from "./BoardDateTimeBadge";
+import BoardDueTodayOverdueBadge from "./BoardDueTodayOverdueBadge";
 import BoardDetail from "./BoardDetail";
 
 import Icon from "@mdi/react";

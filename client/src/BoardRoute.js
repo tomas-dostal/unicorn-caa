@@ -3,7 +3,7 @@ import {BoardContext} from "./context/BoardContext";
 import Button from "react-bootstrap/esm/Button.js";
 import {useNavigate} from "react-router-dom";
 
-import BoardDateTimeBadge from "./BoardDateTimeBadge";
+import BoardDueTodayOverdueBadge from "./BoardDueTodayOverdueBadge";
 import BoardDetail from "./BoardDetail";
 
 import Icon from "@mdi/react";
@@ -17,7 +17,7 @@ function BoardRoute({setShowBoardForm}) {
     <div className="card border-0 shadow rounded" style={componentStyle()}>
       {board ? (
         <>
-          <BoardDateTimeBadge board={board}/>
+          <BoardDueTodayOverdueBadge board={board}/>
           <BoardDetail board={board}/>
           <div style={{display: "flex", justifyContent: "flex-end"}}>
             <Button onClick={() => navigate("/boardDetail?id=" + board.id)} variant="dark" size={"sm"}

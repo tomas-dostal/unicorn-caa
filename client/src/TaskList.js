@@ -27,7 +27,7 @@ function TaskList() {
       : []; // because loggedInUser is null in the beginning
   return (
     <Container>
-      <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px" }}>
+      <div style={{ gap: "8px" }}>
         <Button variant="dark" style={{ backgroundColor: "#ffa31a", color: "#1b1b1b"}} onClick={() => setShowTaskForm({})}>
           <Icon path={mdiPlusBoxOutline} size={1} /> Nový úkol
         </Button>

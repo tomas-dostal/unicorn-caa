@@ -1,14 +1,15 @@
-import { useContext, useState, useEffect } from "react";
-import { TaskListContext } from "./context/TaskListContext.js";
+import {useContext, useEffect, useState} from "react";
+import {TaskListContext} from "./context/TaskListContext.js";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import CloseButton from "react-bootstrap/CloseButton";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
-import { UserContext } from './context/UserContext.js';
+import {UserContext} from './context/UserContext.js';
 import axios from 'axios';
 import {mdiLoading} from "@mdi/js";
-import Icon from "@mdi/react"; // Import axios for making HTTP requests // fixme replace with some provider
+import Icon from "@mdi/react";
+import {BoardContext} from "./context/BoardContext"; // Import axios for making HTTP requests // fixme replace with some provider
 
 // [
 //     {
@@ -83,17 +84,15 @@ const schema = {
     // 10 8h
     // Over 8 hours I need to create subtasks/children
 
-    createdDate: {type: "timestamp"},
-    startDate: {type: "timestamp"},
-    dueDate: {type: "timestamp"},
+    createdDate: {type: "string"},
+    startDate: {type: "string"},
+    dueDate: {type: "string"},
 
     repetitive: {
       type: "object",
       properties: {
         active: {type: "boolean", default: true},
-        period: {type: "timestamp"},
-      },
-      optionalProperties: {
+        period: {type: "string"},
         listCompletedDates: {
           type: "array",
           items: {
@@ -128,36 +127,43 @@ const schema = {
 };
 
 
-function TaskForm({ setShowTaskForm, task }) {
-  const { state, handlerMap } = useContext(TaskListContext);
+function TaskForm({setShowTaskForm, task}) {
+  const {state, handlerMap} = useContext(TaskListContext);
   const [showAlert, setShowAlert] = useState(null);
   const [isPending, setIsPending] = useState(false);
-  const { loggedInUser } = useContext(UserContext); // Access UserContext
+  const {loggedInUser} = useContext(UserContext); // Access UserContext
+  const {board} = useContext(BoardContext); // Access BoardContext
 
   useEffect(() => {
-    // Fetch data for fields that need it from the backend
-    const fetchData = async () => {
+    const fetchPriorities = async () => {
       try {
-        // Fetch priorities
-        const prioritiesResponse = await axios.get('localhost:8000/priority/list'); // fixme replace with some provider
-        const priorities = prioritiesResponse.data;
-
-        // Fetch assignees
-        const assigneesResponse = await axios.get('localhost:8000/users/list'); // fixme replace with some provider
-        const assignees = assigneesResponse.data;
-
-        // Set the fetched data into the form data state
-        setFormData({
-          ...formData,
-          priorities,
-          assignees
-        });
+        const response = await axios.get('http://localhost:8000/priority/list');
+        setPriorities(response.data);
       } catch (error) {
-        console.error(error);
+        console.error('Error fetching priorities:', error);
       }
     };
 
-    fetchData();
+    const fetchAssignees = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/user/list');
+        setAssignees(response.data);
+      } catch (error) {
+        console.error('Error fetching assignees:', error);
+      }
+    };
+
+    Promise.all([fetchPriorities(), fetchAssignees()])
+      .then(() => setLoading(false))
+      .catch((error) => console.error('Error fetching data:', error));
+
+    // Set initial form data after fetching priorities and assignees
+    setFormData({
+      name: task.name || '',
+      description: task.description || '',
+      assigneeId: task.assigneeId || '',
+      priorityId: task.priorityId || ''
+    });
   }, []);
 
   const handleChange = (e) => {
@@ -171,8 +177,9 @@ function TaskForm({ setShowTaskForm, task }) {
     e.preventDefault();
     e.stopPropagation();
     setIsPending(true);
-    const updatedFormData = { ...formData };
-    updatedFormData.userId = loggedInUser.id; // Access userId from loggedInUser
+    const updatedFormData = {...formData};
+    updatedFormData.authorId = loggedInUser.id ? loggedInUser.id : null;
+    updatedFormData.boardId = board.id; // Access boardId from board
 
     try {
       if (task.id) {
@@ -204,7 +211,7 @@ function TaskForm({ setShowTaskForm, task }) {
   useEffect(() => {
     const fetchPriorities = async () => {
       try {
-        const response = await axios.get('/api/priorities');
+        const response = await axios.get('localhost:8000/priority/list');
         setPriorities(response.data);
       } catch (error) {
         console.error('Error fetching priorities:', error);
@@ -213,7 +220,7 @@ function TaskForm({ setShowTaskForm, task }) {
 
     const fetchAssignees = async () => {
       try {
-        const response = await axios.get('/api/users/list');
+        const response = await axios.get('localhost:8000/users/list');
         setAssignees(response.data);
       } catch (error) {
         console.error('Error fetching assignees:', error);
@@ -226,16 +233,14 @@ function TaskForm({ setShowTaskForm, task }) {
   }, []);
 
 
-
-
   return (
     <Modal show={true} onHide={() => setShowTaskForm(false)}>
       <Form onSubmit={handleSubmit}>
         <Modal.Header>
           <Modal.Title>{`${task.id ? "Upravit" : "Vytvořit"} úkol`}</Modal.Title>
-          <CloseButton onClick={() => setShowTaskForm(false)} />
+          <CloseButton onClick={() => setShowTaskForm(false)}/>
         </Modal.Header>
-        <Modal.Body style={{ position: "relative" }}>
+        <Modal.Body style={{position: "relative"}}>
           <Alert
             show={!!showAlert}
             variant="danger"
@@ -248,60 +253,61 @@ function TaskForm({ setShowTaskForm, task }) {
 
           {isPending && (
             <div style={pendingStyle()}>
-              <Icon path={mdiLoading} size={2} spin />
+              <Icon path={mdiLoading} size={2} spin/>
             </div>
           )}
-
-            <Form.Group className="mb-3" controlId="formBasicName">
-              <Form.Label>Název</Form.Label>
-              <Form.Control
-                type="text"
-                name="name"
-                required
-                value={formData.name}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicDescription">
-              <Form.Label>Popis</Form.Label>
-              <Form.Control
-                type="text"
-                name="description"
-                required
-                value={formData.description}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicAssignee">
-              <Form.Label>Assignee</Form.Label>
-              <Form.Select
-                name="assigneeId"
-                value={formData.assigneeId}
-                onChange={handleChange}
-              >
-                <option value="">Select Assignee</option>
-                {assignees.map((assignee) => (
-                  <option key={assignee.id} value={assignee.id}>
-                    {assignee.name}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPriority">
-              <Form.Label>Přiřazeno</Form.Label>
-              <Form.Select
-                name="priorityId"
-                value={formData.priorityId}
-                onChange={handleChange}
-              >
-                <option value="">Select Priority</option>
-                {priorities.map((priority) => (
-                  <option key={priority.id} value={priority.id}>
-                    {priority.name}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
+          {/*<input type="hidden" name="boardId" value={formData.boardId}/>*/}
+          {/*<input type="hidden" name="authorId" value={loggedInUser.id}/>*/}
+          <Form.Group className="mb-3" controlId="formBasicName">
+            <Form.Label>Název</Form.Label>
+            <Form.Control
+              type="text"
+              name="name"
+              required
+              value={formData.name}
+              onChange={handleChange}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicDescription">
+            <Form.Label>Popis</Form.Label>
+            <Form.Control
+              type="text"
+              name="description"
+              required
+              value={formData.description}
+              onChange={handleChange}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicAssignee">
+            <Form.Label>Prirazeno</Form.Label>
+            <Form.Select
+              name="assigneeId"
+              value={formData.assigneeId}
+              onChange={handleChange}
+            >
+              <option value="">Select Assignee</option>
+              {assignees.map((assignee) => (
+                <option key={assignee.id} value={assignee.id}>
+                  {assignee.name}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicPriority">
+            <Form.Label>Priorita</Form.Label>
+            <Form.Select
+              name="priorityId"
+              value={formData.priorityId}
+              onChange={handleChange}
+            >
+              <option value="">Select Priority</option>
+              {priorities.map((priority) => (
+                <option key={priority.id} value={priority.id}>
+                  {priority.name}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
         </Modal.Body>
         <Modal.Footer>
           <Button

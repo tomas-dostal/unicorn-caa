@@ -18,8 +18,8 @@ function get(listId) {
 
 // Method to write a board to a file
 function create(list) {
-    list.createdAt = new Date().toISOString();
-    list.modifiedAt = null;
+    list.createdDate = new Date().toISOString();
+    list.modifiedDate = null;
     try {
         list.id = crypto.randomBytes(16).toString("hex");
         const filePath = path.join(listFolderPath, `${list.id}.json`);
@@ -38,7 +38,7 @@ function update(list) {
         if (!currentList) return null;
         const newList = {...currentList, ...list};
         const filePath = path.join(listFolderPath, `${list.id}.json`);
-        newList.modifiedAt = new Date().toISOString();
+        newList.modifiedDate = new Date().toISOString();
         const fileData = JSON.stringify(newList);
         fs.writeFileSync(filePath, fileData, "utf8");
         return newList;
@@ -70,7 +70,7 @@ function list() {
             );
             return JSON.parse(fileData);
         });
-        listList.sort((a, b) => new Date(a.modifiedAt ? a.modifiedAt : a.createdAt) - new Date(b.modifiedAt ? b.modifiedAt : b.createdAt));
+        listList.sort((a, b) => new Date(a.modifiedDate ? a.modifiedDate : a.createdDate) - new Date(b.modifiedDate ? b.modifiedDate : b.createdDate));
         return listList;
     } catch (error) {
         throw {code: "failedToListBoards", message: error.message};

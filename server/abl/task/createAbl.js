@@ -34,17 +34,15 @@ const schema = {
     // 10 8h
     // Over 8 hours I need to create subtasks/children
 
-    createdDate: {type: "timestamp"},
-    startDate: {type: "timestamp"},
-    dueDate: {type: "timestamp"},
+    createdDate: {type: "string"},
+    startDate: {type: "string"},
+    dueDate: {type: "string"},
 
     repetitive: {
       type: "object",
       properties: {
         active: {type: "boolean", default: true},
-        period: {type: "timestamp"},
-      },
-      optionalProperties: {
+        period: {type: "string"},
         listCompletedDates: {
           type: "array",
           items: {
@@ -94,7 +92,7 @@ async function CreateAbl(req, res) {
       return;
     }
 
-    task.createdAt = new Date().toISOString();
+    // task.createdDate = new Date().toISOString();
     task.finished = task.finished !== null ? task.finished : false;
     task = taskDao.create(task);
     res.json(task);

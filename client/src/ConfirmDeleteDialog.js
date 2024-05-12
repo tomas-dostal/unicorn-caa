@@ -17,7 +17,7 @@ function ConfirmDeleteDialog({ setShowConfirmDeleteDialog, board }) {
   return (
     <Modal show={true} onHide={() => setShowConfirmDeleteDialog(false)}>
       <Modal.Header>
-        <Modal.Title>Smazat událost</Modal.Title>
+        <Modal.Title>Smazat nástěnku</Modal.Title>
         <CloseButton onClick={() => setShowConfirmDeleteDialog(false)} />
       </Modal.Header>
       <Modal.Body style={{ position: "relative" }}>
@@ -35,7 +35,7 @@ function ConfirmDeleteDialog({ setShowConfirmDeleteDialog, board }) {
             <Icon path={mdiLoading} size={2} spin />
           </div>
         ) : null}
-        Opravdu chcete smazat událost {board.name}?
+        Opravdu chcete smazat nástěnku "{board.name}"?
       </Modal.Body>
       <Modal.Footer>
         <Button

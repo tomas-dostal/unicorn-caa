@@ -114,31 +114,10 @@ function BoardListProvider({ children }) {
     }
   }
 
-  async function handleAttendance(dtoIn) {
-    setBoardLoadObject((current) => ({ ...current, state: "pending" }));
-    const response = await fetch(`http://localhost:8000/attendance/update`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(dtoIn),
-    });
-    const responseJson = await response.json();
-
-    if (response.status < 400) {
-      await handleLoad();
-    } else {
-      setBoardLoadObject((current) => ({
-        state: "error",
-        data: current.data,
-        error: responseJson,
-      }));
-      throw new Error(JSON.stringify(responseJson, null, 2));
-    }
-  }
-
   const value = {
     state: boardLoadObject.state,
     boardList: boardLoadObject.data || [],
-    handlerMap: { handleCreate, handleUpdate, handleDelete, handleAttendance },
+    handlerMap: { handleCreate, handleUpdate, handleDelete },
   };
 
   return (

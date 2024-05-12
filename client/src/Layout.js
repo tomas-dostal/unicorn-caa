@@ -11,8 +11,8 @@ const Layout = () => {
       <div style={bodyStyle()}>
         <Outlet />
       </div>
-      <div className={"card-footer text-light"} style={footerStyle()}>
-        © Ivo Milota
+      <div className={"card-footer text-black-50"} style={footerStyle()}>
+        © Ivo Milota, Tomas Dostal
       </div>
     </>
   );
@@ -23,13 +23,12 @@ function bodyStyle() {
     overflow: "auto",
     padding: "16px",
     flex: "1",
-    borderTop: "white 4px solid",
-    borderBottom: "white 4px solid",
+    color: "#ffffff"
   };
 }
 
 function footerStyle() {
-  return { padding: "8px", textAlign: "center", backgroundColor: "#d63232" };
+  return { padding: "8px", textAlign: "center", backgroundColor: "#292929" };
 }
 
 export default Layout;

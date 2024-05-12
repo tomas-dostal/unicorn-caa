@@ -1,7 +1,5 @@
-import { useNavigate } from "react-router-dom";
-
-import { useContext } from "react";
-import { UserContext } from "./context/UserContext";
+import {useContext} from "react";
+import {UserContext} from "./context/UserContext";
 
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -9,28 +7,23 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 
 import Icon from "@mdi/react";
-import { mdiVolleyball, mdiLogout } from "@mdi/js";
-import Button from "react-bootstrap/esm/Button";
+import {mdiLogout} from "@mdi/js";
+
+import BrandLogo from "./Logo";
 
 function NavBar() {
-  const { userList, loggedInUser, handlerMap } = useContext(UserContext);
-  const navigate = useNavigate();
+  const {userList, loggedInUser, handlerMap} = useContext(UserContext);
 
   return (
     <Navbar expand="lg" style={componentStyle()}>
       <Container>
-        <Navbar.Brand>
-          <Button style={brandStyle()} onClick={() => navigate("/")}>
-            <Icon path={mdiVolleyball} size={1} color={"white"} spin={5} />
-            VOLEJBALALÁCI
-          </Button>
-        </Navbar.Brand>
+        <BrandLogo/>
         <Nav>
-          <NavDropdown
-            title={loggedInUser ? loggedInUser.name : "Přihlaš se"}
-            drop={"start"}
+          <NavDropdown style={componentStyle()}
+                       title={loggedInUser ? loggedInUser.name : "Prihlasit se"}
+                       drop={"start"}
           >
-            {getUserMenuList({ userList, loggedInUser, handlerMap })}
+            {getUserMenuList({userList, loggedInUser, handlerMap})}
           </NavDropdown>
         </Nav>
       </Container>
@@ -39,7 +32,10 @@ function NavBar() {
 }
 
 function componentStyle() {
-  return { backgroundColor: "#d63232" };
+  return {
+    backgroundColor: "#292929",
+    color: "#ffa31a" ,
+  };
 }
 
 function brandStyle() {
@@ -47,27 +43,31 @@ function brandStyle() {
     display: "flex",
     alignItems: "center",
     gap: "8px",
-    color: "white",
+    backgroundColor: "#ffa31a",
+    color: "#ffa31a"
+
+
   };
 }
 
-function getUserMenuList({ userList, loggedInUser, handlerMap }) {
-  // temporary solution to enable login/logout
+function getUserMenuList({userList, loggedInUser, handlerMap}) {
+  // fixme temporary solution to enable login/logout
   const userMenuItemList = userList.map((user) => (
-    <NavDropdown.Item key={user.id} onClick={() => handlerMap.login(user.id)}>
+    <NavDropdown.Item variant="dark" key={user.id} onClick={() => handlerMap.login(user.id)}>
       {user.name}
     </NavDropdown.Item>
   ));
 
   if (loggedInUser) {
-    userMenuItemList.push(<NavDropdown.Divider key={"divider"} />);
+    userMenuItemList.push(<NavDropdown.Divider key={"divider"}/>);
     userMenuItemList.push(
       <NavDropdown.Item
+        variant="dark"
         key={"logout"}
         onClick={() => handlerMap.logout()}
-        style={{ color: "red" }}
+        style={{color: "red"}}
       >
-        <Icon path={mdiLogout} size={0.8} color={"red"} /> {"Odhlas se"}
+        <Icon path={mdiLogout} size={0.8} color={"red"}/> {"Odhlas se"}
       </NavDropdown.Item>
     );
   }

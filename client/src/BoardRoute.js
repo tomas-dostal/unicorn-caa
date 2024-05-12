@@ -18,7 +18,7 @@ function BoardRoute({setShowBoardForm}) {
       {board ? (
         <>
           <BoardDueTodayOverdueBadge board={board}/>
-          <BoardDetail board={board}/>
+          <BoardDetail board={board} displayTaskList={true} setShowBoardForm={setShowBoardForm}/>
           <div style={{display: "flex", justifyContent: "flex-end"}}>
             <Button onClick={() => navigate("/boardDetail?id=" + board.id)} variant="dark" size={"sm"}
                     style={{margin: "5px", backgroundColor: "#808080"}}>

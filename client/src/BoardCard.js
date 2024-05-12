@@ -12,11 +12,12 @@ function BoardCard({ board, setShowBoardForm, setShowConfirmDeleteDialog }) {
 
   return (
     <div className="card border-0 shadow rounded" style={componentStyle()}>
+      <BoardDueTodayOverdueBadge board={board}/>
       <div style={{
         display: "grid",
         gridTemplateColumns: "1fr auto"
       }}>
-        <BoardDetail board={board} />
+        <BoardDetail board={board} displayTaskList={false} setShowBoardForm={setShowBoardForm} setShowConfirmDeleteDialog={setShowConfirmDeleteDialog} />
       </div>
       <div>
       </div>

@@ -12,29 +12,22 @@ function BoardCard({ board, setShowBoardForm, setShowConfirmDeleteDialog }) {
 
   return (
     <div className="card border-0 shadow rounded" style={componentStyle()}>
-      <BoardDetail board={board} />
-      <div
-        style={{
-          display: "grid",
-          gap: "2px",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Button
-          onClick={() => navigate("/boardDetail?id=" + board.id)}
-          size={"sm"}
-        >
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "1fr auto"
+      }}>
+        <BoardDetail board={board} />
+      </div>
+      <div>
+      </div>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <Button onClick={() => navigate("/boardDetail?id=" + board.id)} variant="dark" size={"sm"} style={{margin:"5px",  backgroundColor: "#808080"}}>
           <Icon path={mdiEyeOutline} size={0.7} />
         </Button>
-        <Button onClick={() => setShowBoardForm(board)} size={"sm"}>
+        <Button onClick={() => setShowBoardForm(board)} size={"sm"} variant="dark"  style={{margin:"5px",  backgroundColor: "#808080"}}>
           <Icon path={mdiPencil} size={0.7} />
         </Button>
-        <Button
-          onClick={() => setShowConfirmDeleteDialog(board)}
-          size={"sm"}
-          variant="danger"
-        >
+        <Button onClick={() => setShowConfirmDeleteDialog(board)} size={"sm"} variant="dark" style={{margin:"5px", backgroundColor: "#ffa31a"}}>
           <Icon path={mdiTrashCanOutline} size={0.7} />
         </Button>
       </div>
@@ -45,11 +38,8 @@ function BoardCard({ board, setShowBoardForm, setShowConfirmDeleteDialog }) {
 function componentStyle() {
   return {
     margin: "12px auto",
-    padding: "8px",
-    display: "grid",
-    gridTemplateColumns: "max-content auto 32px",
-    columnGap: "8px",
-    maxWidth: "640px",
+    padding: "16px",
+    maxWidth: "100%",
   };
 }
 

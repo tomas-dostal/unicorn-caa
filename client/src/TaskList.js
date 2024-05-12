@@ -28,8 +28,8 @@ function TaskList() {
   return (
     <Container>
       <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px" }}>
-        <Button variant="success" onClick={() => setShowTaskForm({})}>
-          <Icon path={mdiPlusBoxOutline} size={1} color={"white"} /> Nový úkol
+        <Button variant="dark" style={{ backgroundColor: "#ffa31a", color: "#1b1b1b"}} onClick={() => setShowTaskForm({})}>
+          <Icon path={mdiPlusBoxOutline} size={1} /> Nový úkol
         </Button>
       </div>
       {!!showTaskForm ? (

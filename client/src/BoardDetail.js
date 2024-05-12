@@ -1,31 +1,25 @@
-import WillAttendBadge from "./WillAttendBadge";
-import AttendeeDecision from "./AttendeeDecision";
 import TaskList from "./TaskList";
 
-function BoardDetail({ board }) {
-  let willAttendCount = 0;
-  // if (board.userMap) {
-  //   Object.entries(board.userMap).forEach(([key, value]) => {
-  //     if (value.attendance === "yes") willAttendCount++;
-  //     if (value.guests) willAttendCount += value.guests;
-  //   });
-  // }
+function BoardDetail({board}) {
 
   return (
-    <div style={{ display: "grid", rowGap: "4px" }}>
-      <div className="row" style={{ margin: "0" }}>
-      <div style={{ fontSize: "22px" }}>{board.name}</div>
-      <div>{board.description}</div>
-        <TaskList
-        board={board}>
-        </TaskList>
+    <div style={boardDetailStyle()}>
+      <div className="board-header" style={{marginBottom: "20px"}}>
+        <div style={{fontSize: "22px", marginRight: "20px"}}>{board.name}</div>
+        <div>{board.description}</div>
+      </div>
+      <div className="task-list">
+        <TaskList board={board}/>
       </div>
     </div>
   );
 }
 
-function decisionColumnStyle() {
-  return { display: "flex", justifyContent: "right", padding: "0" };
+function boardDetailStyle() {
+  return {
+    // padding: "16px",
+    // margin: "20px",
+  };
 }
 
 export default BoardDetail;

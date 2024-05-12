@@ -55,7 +55,7 @@ function componentStyle() {
     display: "flex",
     flexDirection: "column",
     overflow: "hidden",
-    backgroundColor: "#1b1b1b",
+    backgroundColor: "#000",
   };
 }
 

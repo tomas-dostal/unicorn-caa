@@ -27,8 +27,8 @@ function BoardList() {
     <Container>
       {!!loggedInUser ? (
         <div style={{display: "flex", justifyContent: "flex-end", gap: "8px"}}>
-          <Button variant="success" onClick={() => setShowBoardForm({})}>
-            <Icon path={mdiPlusBoxOutline} size={1} color={"white"}/> Nova nastenka
+          <Button variant="dark" style={{ backgroundColor: "#ffa31a", color: "#1b1b1b"}} onClick={() => setShowBoardForm({})}>
+            <Icon path={mdiPlusBoxOutline} size={1}/> Nova nastenka
           </Button>
         </div>
       ) : null}
@@ -42,7 +42,7 @@ function BoardList() {
         />
       ) : null}
       {filteredBoardList.length === 0 ? (
-        <p>Nic k zobrazeni</p>
+        <p>Nic k zobrazeni, zkus se prihlasit</p>
       ) : (
         filteredBoardList.map((board) => (
           <Col key={board.id} xs={12} sm={6} md={4} lg={3}>

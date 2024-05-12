@@ -14,7 +14,7 @@ function TaskDetail({ task }) {
     <div style={{ display: "grid", rowGap: "4px" }}>
       <div className="row" style={{ margin: "0" }}>
       <div style={{ fontSize: "22px" }}>{task.name}</div>
-      <div>{task.description}</div>
+      <div style={{width: "min-content"}}>{task.description}</div>
       </div>
     </div>
   );

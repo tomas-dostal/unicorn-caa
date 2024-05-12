@@ -23,10 +23,10 @@ function TaskList() {
   //const { currentBoard } = useContext(BoardContext); // Access BoardContext
 
   const filteredTaskList = loggedInUser
-      ? taskList.filter((task) => task.userId === loggedInUser.id )// && task.boardId === currentBoard.id)
+      ? taskList.filter((task) => task.authorId === loggedInUser.id )// && task.boardId === currentBoard.id)
       : []; // because loggedInUser is null in the beginning
   return (
-    <Container>
+    <Container style={{columnCount: 3}}>
       <div style={{ gap: "8px" }}>
         <Button variant="dark" style={{ backgroundColor: "#ffa31a", color: "#1b1b1b"}} onClick={() => setShowTaskForm({})}>
           <Icon path={mdiPlusBoxOutline} size={1} /> Nový úkol
@@ -45,7 +45,7 @@ function TaskList() {
           <p>Nic k zobrazeni</p>
       ) : (
           filteredTaskList.map((task) => (
-              <Col key={task.id} xs={12} sm={6} md={4} lg={3}>
+              <Col key={task.id} md={4} lg={3}>
                 <TaskCard
                     task={task}
                     setShowTaskForm={setShowTaskForm}

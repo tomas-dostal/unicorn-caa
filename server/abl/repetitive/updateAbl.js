@@ -11,7 +11,7 @@ const schema = {
         id: {type: "string", minLength: 32, maxLength: 32},
         name: {type: "string"},
         description: {type: "string"},
-        value: {type: "int32"},
+        value: {type: "integer"},
     },
     required: ["name", "description", "value"],
     additionalProperties: false,

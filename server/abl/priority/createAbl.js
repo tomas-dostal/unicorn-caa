@@ -8,7 +8,7 @@ const schema = {
     properties: {
         name: {type: "string"},
         description: {type: "string"},
-        value: {type: "int32"},
+        value: {type: "integer"},
     },
     required: ["name", "description", "value"],
     additionalProperties: false,

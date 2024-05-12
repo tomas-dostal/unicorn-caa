@@ -12,7 +12,6 @@ function BoardCard({ board, setShowBoardForm, setShowConfirmDeleteDialog }) {
 
   return (
     <div className="card border-0 shadow rounded" style={componentStyle()}>
-      <BoardDateTimeBadge board={board} />
       <BoardDetail board={board} />
       <div
         style={{

@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { TaskListContext } from "./context/TaskListContext.js";
 import { UserContext } from './context/UserContext.js';
-import { BoardContext } from './context/BoardContext.js';
+//import { BoardContext } from './context/BoardContext.js';
 
 import Button from "react-bootstrap/esm/Button.js";
 
@@ -20,10 +20,10 @@ function TaskList() {
   const [showTaskForm, setShowTaskForm] = useState(false);
   const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
   const { loggedInUser } = useContext(UserContext); // Access UserContext
-  const { currentBoard } = useContext(BoardContext); // Access BoardContext
+  //const { currentBoard } = useContext(BoardContext); // Access BoardContext
 
   const filteredTaskList = loggedInUser
-      ? taskList.filter((task) => task.userId === loggedInUser.id && task.boardId === currentBoard.id)
+      ? taskList.filter((task) => task.userId === loggedInUser.id )// && task.boardId === currentBoard.id)
       : []; // because loggedInUser is null in the beginning
   return (
     <Container>

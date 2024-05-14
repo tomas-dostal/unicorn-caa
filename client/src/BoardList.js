@@ -21,13 +21,14 @@ function BoardList() {
   const {loggedInUser} = useContext(UserContext); // Access UserContext
 
   const filteredBoardList = loggedInUser
-    ? boardList.filter((board) => board.userId === loggedInUser.id)
+    ? boardList.filter((board) => (loggedInUser.id === board.userId || (board.sharedWith && board.sharedWith.includes(loggedInUser.id))))
     : []; // because loggedInUser is null in the beginning
   return (
     <Container>
       {!!loggedInUser ? (
         <div style={{display: "flex", justifyContent: "flex-end", gap: "8px"}}>
-          <Button variant="dark" style={{ backgroundColor: "#ffa31a", color: "#1b1b1b"}} onClick={() => setShowBoardForm({})}>
+          <Button variant="dark" style={{backgroundColor: "#ffa31a", color: "#1b1b1b"}}
+                  onClick={() => setShowBoardForm({})}>
             <Icon path={mdiPlusBoxOutline} size={1}/> Nova nastenka
           </Button>
         </div>

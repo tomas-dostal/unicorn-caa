@@ -16,14 +16,7 @@ const schema = {
         userId: { readOnly: true },
         sharedWith: {
             type: "array",
-            items: {
-                type: "object",
-                properties: {
-                    userId: {type: "string", minLength: 32, maxLength: 32}
-                },
-                required: ["userId"],
-                additionalProperties: false
-            }
+            items: {type: "string", minLength: 32, maxLength: 32}
         }
     },
     required: ["id"],
